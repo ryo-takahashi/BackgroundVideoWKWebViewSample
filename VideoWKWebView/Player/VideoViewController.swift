@@ -14,6 +14,8 @@ class VideoViewController: UIViewController {
     fileprivate let player: Player = Player()
 
     fileprivate var playerForBackground: AVPlayer?
+    
+    let seekbar = UISlider()
 
     fileprivate lazy var label: UILabel = {
         let label = UILabel()
@@ -55,8 +57,18 @@ class VideoViewController: UIViewController {
         player.playbackResumesWhenEnteringForeground = false
 
         ext.setupAppStateObservers(to: #selector(self.didReceiveAppStateChange(notification:)))
-
+        
+        seekbar.frame = CGRect(x: 0, y: view.bounds.maxY - 100, width: view.bounds.width, height: 100)
+        view.addSubview(seekbar)
+        seekbar.addTarget(self, action: #selector(onSliderValueChange), for: .valueChanged)
+        
         showLabel()
+    }
+    
+    @objc func onSliderValueChange(sender: UISlider) {
+        player.volume = sender.value
+        print("testtest \(sender.value)")
+        print("testtest \(player.volume)")
     }
 
 }
